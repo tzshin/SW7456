@@ -75,6 +75,7 @@ extern void osd_decode_spi_registers(U8 data);
 #define REG_7456_CMAL  0x0a  // Character Memory Address Low     (NOT SUPPORTED)
 #define REG_7456_CMDI  0x0b  // Character Memory Data In         (NOT SUPPORTED)
 #define REG_7456_OSDM  0x0c  // OSD Insertion Mux                (NOT SUPPORTED)
+#define R_7456_OSDM_DEFAULT 0x1B  // OSDM default value (BF device detection gate)
 // *********************************************************************************************** //
 // *********************************************************************************************** //
 #define REG_7456_RB0   0x10  // Row 0 Brightness this one applies to all rows

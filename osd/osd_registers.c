@@ -90,8 +90,9 @@ if (sdi<512) spi_debug[sdi++]=data;
 switch (spi_state)
 	{
 	case 0: // wait for address
+		if (data==0xFF) break; // spiWrite flush (single byte) — stay in state 0
 		spi_addr=data;
-		if (spi_addr&0x80) spi_state=2; // unsupported read
+		if (spi_addr&0x80) spi_state=2; // read command — consume data phase byte
 		else spi_state=1;
 		break;
 
@@ -132,6 +133,7 @@ switch (spi_state)
 						write_register_defaults();
 						set_mixmux();
 						}
+					spi_tx_response = registers[REG_7456_VM0] & ~R_7456_VM0_RST;
 					break;
 
 				case REG_7456_VM1:
@@ -176,11 +178,9 @@ switch (spi_state)
 		break;
 
 	case 2:
-		// Ignore 7456 SPI reads, they can not be supported.
-		// SPI always reads 0x00 or 0xFF based on the pull-up configuration.
-		// a zero should follow a read command, used to resync.
-		if (data==0x00) spi_state=0;
-
+		// Read data phase — FC sends 0xFF on MOSI while capturing MISO.
+		// Consume this byte and return to state 0 for the next address.
+		spi_state=0;
 		spi_debug_trigger(spi_addr,data);
 		break;
 

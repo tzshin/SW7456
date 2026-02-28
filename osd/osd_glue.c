@@ -244,7 +244,7 @@ osd_gen_init();
 
 osd_irq_init();
 osd_irq_start();
-osd_spi_start();
+osd_spi_start();  // DMA setup for normal RX processing (FIFO already pre-loaded in main.c)
 
 display_copyright();
 }

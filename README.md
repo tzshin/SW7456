@@ -14,10 +14,10 @@ Generates its own video signal when none is present. Automacically switches when
 horizontal and vertical adjustment and brightness setting via 7456 registers
 
 Known issues:
-1) No SPI read compatability. Only write compatability.
-all SPI reads will return the value 0x00.
+1) SPI read support is limited. All register reads return the same value (VM0 shadow at runtime,
+OSDM default 0x1B at boot). This is sufficient for Betaflight 4.5 device detection and stall
+monitoring, but does not implement per-register readback. See MISO-NOTES.md for details.
 
- 
 2) Line start detection quanitization
 This causes lines to start at slightly different times (around 1/8 of a pixel width) which make vertical lines less crisp.
 All software OSD will suffer from this issue to some degree, I did my best to minimize the artifact. 
